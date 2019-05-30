@@ -6,34 +6,30 @@ import pymysql
 import time
 import datetime
 
+athena_shell = "/usr/local/jdk1.8.0_121/bin/java -classpath libs/athena_query_kika_tool-1.0.jar:" \
+               "libs/AthenaJDBC41-1.0.0.jar:" \
+               "libs/mysql-connector-java-5.1.40-bin.jar" \
+               " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
+               " AKIAIUO2VW53QUXXMCFQ "
+
 
 def get_cdate(i):
     time_today = time.localtime(time.time())
     year = time_today.tm_year
     mon = time_today.tm_mon
     day = time_today.tm_mday
-    # year = 2017
-    # mon = 7
-    # day = 25
     return str(datetime.datetime(year, mon, day) - datetime.timedelta(i)).split()[0].replace('-', '')
 
 
 def test_insert_top5_and_nations():
-    time_now = time.localtime(time.time())
-    #cdate_2 = str(time_now.tm_year) + (str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + (
-    #    str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
     cdate_2 = get_cdate(2)
-    #cdate_2_format = str(time_now.tm_year) + "-" + (
-    #    str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + "-" + (
-    #                    str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
-    cdate_2_format=cdate_2[0:4]+'-'+cdate_2[4:6]+'-'+cdate_2[6:]
-    # cdate_2 = "20170713"
-    # cdate_2_format = "2017-07-13"
-    athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
-                   " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-                   " AKIAIUO2VW53QUXXMCFQ "
+    cdate_2_format = cdate_2[0:4] + '-' + cdate_2[4:6] + '-' + cdate_2[6:]
+
+    # athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
+    #                "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
+    #                "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
+    #                " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
+    #                " AKIAIUO2VW53QUXXMCFQ "
 
     """
     1. 定义top10国家
@@ -95,9 +91,9 @@ def test_insert_top5_and_nations():
         # dnu_organic
     ]
 
-    db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
+    db_kola = pymysql.connect(host="52.32.173.198", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
-    db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
+    db = pymysql.connect(host="52.32.173.198", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
     select_version = {
         # kika top5版本
@@ -208,26 +204,8 @@ def test_insert_top5_and_nations():
             db.rollback()
 
 
-            # # SQL for Insert tables
-            #
-            #
-            #
-            # # Execute SQL
-            # try:
-            #     cursor.execute(sql)
-            #     db.commit()
-            # except:
-            #     db.rollback()
-
-
 def test_insert_all_ver():
-    time_now = time.localtime(time.time())
     cdate_2 = get_cdate(2)
-    athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
-                   " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-                   " AKIAIUO2VW53QUXXMCFQ "
 
     """
     1. 定义top10国家
@@ -289,7 +267,6 @@ def test_insert_all_ver():
     db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
     cursor = db.cursor()
-    cursor_kola = db_kola.cursor()
 
     """
     create_date	app_key	version	nation	app_create_time	kb_create_1st_time	kb_createview_startup_time	kb_createview_startup_1st_time	kb_warm_startup_time	emoji_time	menu_time	suggestions_time	slide_suggestions_time
@@ -373,22 +350,8 @@ def test_insert_all_ver():
 
 
 def test_insert_latest_and_nations():
-    time_now = time.localtime(time.time())
-    #cdate_2 = str(time_now.tm_year) + (str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + (
-    #    str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
-    #cdate_2_format = str(time_now.tm_year) + "-" + (
-    #    str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + "-" + (
-    #                     str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
-    cdate_2=get_cdate(2)
-    cdate_2_format=cdate_2[0:4]+'-'+cdate_2[4:6]+'-'+cdate_2[6:]
-
-    # cdate_2 = "20170713"
-    # cdate_2_format = "2017-07-13"
-    athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
-                   " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-                   " AKIAIUO2VW53QUXXMCFQ "
+    cdate_2 = get_cdate(2)
+    cdate_2_format = cdate_2[0:4] + '-' + cdate_2[4:6] + '-' + cdate_2[6:]
 
     """
     1. 定义top10国家
@@ -549,34 +512,10 @@ def test_insert_latest_and_nations():
             db.rollback()
 
 
-            # # SQL for Insert tables
-            #
-            #
-            #
-            # # Execute SQL
-            # try:
-            #     cursor.execute(sql)
-            #     db.commit()
-            # except:
-            #     db.rollback()
-
 
 def test_insert_latest():
-    time_now = time.localtime(time.time())
-#    cdate_2 = str(time_now.tm_year) + (str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + (
-#        str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
-#    cdate_2_format = str(time_now.tm_year) + "-" + (
-#        str(time_now.tm_mon) if time_now.tm_mon > 9 else "0" + str(time_now.tm_mon)) + "-" + (
-#                         str(time_now.tm_mday - 2) if (time_now.tm_mday - 2) > 9 else "0" + str(time_now.tm_mday - 2))
-    cdate_2=get_cdate(2)
-    cdate_2_format=cdate_2[0:4]+'-'+cdate_2[4:6]+'-'+cdate_2[6:]
-    # cdate_2 = "20170713"
-    # cdate_2_format = "2017-07-13"
-    athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
-                   "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
-                   " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-                   " AKIAIUO2VW53QUXXMCFQ "
+    cdate_2 = get_cdate(2)
+    cdate_2_format = cdate_2[0:4] + '-' + cdate_2[4:6] + '-' + cdate_2[6:]
 
     db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
@@ -589,8 +528,6 @@ def test_insert_latest():
         "4e5ab3a6d2140457e0423a28a094b1fd": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='4e5ab3a6d2140457e0423a28a094b1fd' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED)  desc limit 1;",
         # ikey top5
         "e2934742f9d3b8ef2b59806a041ab389": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='e2934742f9d3b8ef2b59806a041ab389' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED)  desc limit 1;",
-        # kikaindic top5
-        "b1f6dd09ec315aa442bbb01d0663dd22": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='b1f6dd09ec315aa442bbb01d0663dd22' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;",
         # clavier top5
         "73750b399064a5eb43afc338cd5cad25": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='73750b399064a5eb43afc338cd5cad25' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;"
 
@@ -687,18 +624,6 @@ def test_insert_latest():
             db.commit()
         except:
             db.rollback()
-
-
-            # # SQL for Insert tables
-            #
-            #
-            #
-            # # Execute SQL
-            # try:
-            #     cursor.execute(sql)
-            #     db.commit()
-            # except:
-            #     db.rollback()
 
 
 if __name__ == '__main__':
