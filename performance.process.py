@@ -91,9 +91,9 @@ def test_insert_top5_and_nations():
         # dnu_organic
     ]
 
-    db_kola = pymysql.connect(host="52.32.173.198", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
+    db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
-    db = pymysql.connect(host="52.32.173.198", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
+    db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
     select_version = {
         # kika top5版本
