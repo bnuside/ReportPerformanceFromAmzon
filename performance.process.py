@@ -32,11 +32,6 @@ def test_insert_top5_and_nations():
     cdate_2 = get_cdate(2)
     cdate_2_format = cdate_2[0:4] + '-' + cdate_2[4:6] + '-' + cdate_2[6:]
 
-    # athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:" \
-    #                "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
-    #                "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
-    #                " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-    #                " AKIAIUO2VW53QUXXMCFQ "
 
     """
     1. 定义top10国家
@@ -87,20 +82,10 @@ def test_insert_top5_and_nations():
            Inline image 1
 
     """
-    k1 = '\'78472ddd7528bcacc15725a16aeec190\''
-    k2 = '\'4e5ab3a6d2140457e0423a28a094b1fd\''
-    k3 = '\'e2934742f9d3b8ef2b59806a041ab389\''
-    k4 = '\'b1f6dd09ec315aa442bbb01d0663dd22\''
-    k5 = "\'73750b399064a5eb43afc338cd5cad25\'"
-
-    sql_list = [
-        # k3
-        # dnu_organic
-    ]
 
     db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
-    db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
+    db_matrix = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
     select_version = {
         # kika top5版本
@@ -116,7 +101,7 @@ def test_insert_top5_and_nations():
 
     }
 
-    cursor = db.cursor()
+    cursor_matrix = db_matrix.cursor()
     cursor_kola = db_kola.cursor()
 
     """
@@ -131,10 +116,10 @@ def test_insert_top5_and_nations():
                    "emoji_time_95", "menu_time_95", "suggestions_time_95",
                    "slide_suggestions_time_95"]
     count_key = len(insert_keys)
-    for appkey, sel_ver in select_version.items():
+    for appkey, get_version_sql in select_version.items():
         try:
-            log.logger.info(sel_ver)
-            cursor_kola.execute(sel_ver)
+            log.logger.info('Getting latest version of app %s.' % appkey)
+            cursor_kola.execute(get_version_sql)
             db_kola.commit()
             result = cursor_kola.fetchall()
         except:
@@ -171,7 +156,7 @@ def test_insert_top5_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info('{ak}\t{ash}\t"{sql}"'.format(ak=appkey, ash=athena_shell,sql=sel_amazon))
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
@@ -205,10 +190,10 @@ def test_insert_top5_and_nations():
         insert_sql = insert_sql[:-1]
         log.logger.info(insert_sql)
         try:
-            cursor.execute(insert_sql)
-            db.commit()
+            cursor_matrix.execute(insert_sql)
+            db_matrix.commit()
         except:
-            db.rollback()
+            db_matrix.rollback()
 
 
 def test_insert_all_ver():
@@ -271,9 +256,9 @@ def test_insert_all_ver():
 
     db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
-    db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
+    db_matrix = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
-    cursor = db.cursor()
+    cursor_matrix = db_matrix.cursor()
 
     """
     create_date	app_key	version	nation	app_create_time	kb_create_1st_time	kb_createview_startup_time	kb_createview_startup_1st_time	kb_warm_startup_time	emoji_time	menu_time	suggestions_time	slide_suggestions_time
@@ -316,7 +301,7 @@ def test_insert_all_ver():
         count = 4
         while count > 0:
             count -= 1
-            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info('{ak}\t{ash}\t"{sql}"'.format(ak=appkey, ash=athena_shell, sql=sel_amazon))
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
@@ -350,10 +335,10 @@ def test_insert_all_ver():
         insert_sql = insert_sql[:-1]
         log.logger.info(insert_sql)
         try:
-            cursor.execute(insert_sql)
-            db.commit()
+            cursor_matrix.execute(insert_sql)
+            db_matrix.commit()
         except:
-            db.rollback()
+            db_matrix.rollback()
 
 
 def test_insert_latest_and_nations():
@@ -479,7 +464,7 @@ def test_insert_latest_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info('{ak}\t{ash}\t"{sql}"'.format(ak=appkey, ash=athena_shell, sql=sel_amazon))
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
@@ -525,7 +510,7 @@ def test_insert_latest():
 
     db_kola = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="koala")
 
-    db = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
+    db_matrix = pymysql.connect(host="172.31.21.163", user="kikatechuser", passwd="r9ca#J40cd39", db="kika_key_metrics")
 
     select_version = {
         # kika top5版本
@@ -539,7 +524,7 @@ def test_insert_latest():
 
     }
 
-    cursor = db.cursor()
+    cursor_matrix = db_matrix.cursor()
     cursor_kola = db_kola.cursor()
 
     """
@@ -592,7 +577,7 @@ def test_insert_latest():
         count = 4
         while count > 0:
             count -= 1
-            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info('{ak}\t{ash}\t"{sql}"'.format(ak=appkey, ash=athena_shell, sql=sel_amazon))
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
@@ -626,10 +611,10 @@ def test_insert_latest():
         insert_sql = insert_sql[:-1]
         log.logger.info(insert_sql)
         try:
-            cursor.execute(insert_sql)
-            db.commit()
+            cursor_matrix.execute(insert_sql)
+            db_matrix.commit()
         except:
-            db.rollback()
+            db_matrix.rollback()
 
 
 if __name__ == '__main__':
