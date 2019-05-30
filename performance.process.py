@@ -133,7 +133,7 @@ def test_insert_top5_and_nations():
     count_key = len(insert_keys)
     for appkey, sel_ver in select_version.items():
         try:
-            print(sel_ver)
+            log.logger.info(sel_ver)
             cursor_kola.execute(sel_ver)
             db_kola.commit()
             result = cursor_kola.fetchall()
@@ -143,7 +143,7 @@ def test_insert_top5_and_nations():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key,version,nation," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -171,11 +171,11 @@ def test_insert_top5_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -203,7 +203,7 @@ def test_insert_top5_and_nations():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
@@ -316,11 +316,11 @@ def test_insert_all_ver():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -348,7 +348,7 @@ def test_insert_all_ver():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
@@ -451,7 +451,7 @@ def test_insert_latest_and_nations():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key,nation," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -479,11 +479,11 @@ def test_insert_latest_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -511,7 +511,7 @@ def test_insert_latest_and_nations():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
@@ -564,7 +564,7 @@ def test_insert_latest():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -592,11 +592,11 @@ def test_insert_latest():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -624,7 +624,7 @@ def test_insert_latest():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
