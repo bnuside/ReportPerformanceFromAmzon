@@ -5,12 +5,26 @@ import subprocess
 import pymysql
 import time
 import datetime
+import os
+from libs.env import Env
 
-athena_shell = "/usr/local/jdk1.8.0_121/bin/java -classpath libs/athena_query_kika_tool-1.0.jar:" \
+
+env = Env()
+athena_shell = '{java} -classpath {query}{jdbc}{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ '.format(
+    java='/usr/local/jdk1.8.0_121/bin/java',
+    query=os.path.join(env.libs_path, 'athena_query_kika_tool-1.0.jar:'),
+    jdbc=os.path.join(env.libs_path, 'AthenaJDBC41-1.0.0.jar:'),
+    connector=os.path.join(env.libs_path, 'mysql-connector-java-5.1.40-bin.jar')
+)
+
+athena_shell2 = "/usr/local/jdk1.8.0_121/bin/java -classpath libs/athena_query_kika_tool-1.0.jar:" \
                "libs/AthenaJDBC41-1.0.0.jar:" \
                "libs/mysql-connector-java-5.1.40-bin.jar" \
                " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
                " AKIAIUO2VW53QUXXMCFQ "
+
+print(athena_shell)
+print(athena_shell2)
 
 
 def get_cdate(i):
