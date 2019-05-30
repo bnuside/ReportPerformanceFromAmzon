@@ -5,12 +5,18 @@ import subprocess
 import pymysql
 import time
 import datetime
+import os
+from libs.env import Env
+from libs.log import Log
 
-athena_shell = "/usr/local/jdk1.8.0_121/bin/java -classpath libs/athena_query_kika_tool-1.0.jar:" \
-               "libs/AthenaJDBC41-1.0.0.jar:" \
-               "libs/mysql-connector-java-5.1.40-bin.jar" \
-               " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-               " AKIAIUO2VW53QUXXMCFQ "
+env = Env()
+log = Log()
+athena_shell = '{java} -classpath {query}{jdbc}{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ '.format(
+    java='/usr/local/jdk1.8.0_121/bin/java',
+    query=os.path.join(env.libs_path, 'athena_query_kika_tool-1.0.jar:'),
+    jdbc=os.path.join(env.libs_path, 'AthenaJDBC41-1.0.0.jar:'),
+    connector=os.path.join(env.libs_path, 'mysql-connector-java-5.1.40-bin.jar')
+)
 
 
 def get_cdate(i):
@@ -22,6 +28,7 @@ def get_cdate(i):
 
 
 def test_insert_top5_and_nations():
+    log.logger.info('top5 gethering.')
     cdate_2 = get_cdate(2)
     cdate_2_format = cdate_2[0:4] + '-' + cdate_2[4:6] + '-' + cdate_2[6:]
 
@@ -126,7 +133,7 @@ def test_insert_top5_and_nations():
     count_key = len(insert_keys)
     for appkey, sel_ver in select_version.items():
         try:
-            print(sel_ver)
+            log.logger.info(sel_ver)
             cursor_kola.execute(sel_ver)
             db_kola.commit()
             result = cursor_kola.fetchall()
@@ -136,7 +143,7 @@ def test_insert_top5_and_nations():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key,version,nation," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -164,11 +171,11 @@ def test_insert_top5_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -196,7 +203,7 @@ def test_insert_top5_and_nations():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
@@ -309,11 +316,11 @@ def test_insert_all_ver():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -341,7 +348,7 @@ def test_insert_all_ver():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
@@ -444,7 +451,7 @@ def test_insert_latest_and_nations():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key,nation," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -472,11 +479,11 @@ def test_insert_latest_and_nations():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -504,13 +511,12 @@ def test_insert_latest_and_nations():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
         except:
             db.rollback()
-
 
 
 def test_insert_latest():
@@ -558,7 +564,7 @@ def test_insert_latest():
         for g_key, g_value in result:
             verson_str += "'" + str(g_key) + "',"
         verson_str = verson_str[:-1] + ")"
-        print(verson_str)
+        log.logger.info(verson_str)
         sel_amazon = "select cdate,app_key," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -586,11 +592,11 @@ def test_insert_latest():
         count = 4
         while count > 0:
             count -= 1
-            print(appkey, athena_shell + "\"" + sel_amazon + "\"")
+            log.logger.info(appkey, athena_shell + "\"" + sel_amazon + "\"")
             p = subprocess.Popen(athena_shell + "\"" + sel_amazon + "\"", shell=True, stdout=subprocess.PIPE)
             subprocess.Popen.wait(p)
             result = p.stdout.readlines()
-            print("result: " + str(result))
+            log.logger.info("result: " + str(result))
             if len(result) > 0:
                 for line in result:
                     line = line.decode()
@@ -618,7 +624,7 @@ def test_insert_latest():
             #
             # Execute SQL
         insert_sql = insert_sql[:-1]
-        print(insert_sql)
+        log.logger.info(insert_sql)
         try:
             cursor.execute(insert_sql)
             db.commit()
