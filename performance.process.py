@@ -94,8 +94,6 @@ def test_insert_top5_and_nations():
         "4e5ab3a6d2140457e0423a28a094b1fd": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='4e5ab3a6d2140457e0423a28a094b1fd' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;",
         # ikey top5
         "e2934742f9d3b8ef2b59806a041ab389": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='e2934742f9d3b8ef2b59806a041ab389' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;",
-        # kikaindic top5
-        "b1f6dd09ec315aa442bbb01d0663dd22": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='b1f6dd09ec315aa442bbb01d0663dd22' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;",
         # clavier top5
         "73750b399064a5eb43afc338cd5cad25": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='73750b399064a5eb43afc338cd5cad25' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;"
 
@@ -273,7 +271,7 @@ def test_insert_all_ver():
                    "slide_suggestions_time_95"]
     count_key = len(insert_keys)
 
-    for appkey in [k1, k2, k3, k4, k5]:
+    for appkey in [k1, k2, k3, k5]:
         sel_amazon = "select cdate,app_key," \
                      "avg(case when json_extract_scalar(extra,'$.app_create') is not null and  json_extract_scalar(extra,'$.app_create')<>'' and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) >0 and cast( json_extract_scalar(extra,'$.app_create') as BIGINT) <20000 then cast( json_extract_scalar(extra,'$.app_create') as BIGINT) end) as app_create_time," \
                      "avg(case when json_extract_scalar(extra,'$.kb_create_1st') is not null and  json_extract_scalar(extra,'$.kb_create_1st')<>'' and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)>0 and cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT)<20000 then cast( json_extract_scalar(extra,'$.kb_create_1st') as BIGINT) end) as kb_create_1st_time," \
@@ -406,8 +404,8 @@ def test_insert_latest_and_nations():
         "4e5ab3a6d2140457e0423a28a094b1fd": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='4e5ab3a6d2140457e0423a28a094b1fd' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;",
         # ikey top5
         "e2934742f9d3b8ef2b59806a041ab389": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='e2934742f9d3b8ef2b59806a041ab389' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;",
-        # kikaindic top5
-        "b1f6dd09ec315aa442bbb01d0663dd22": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='b1f6dd09ec315aa442bbb01d0663dd22' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;"
+        # clavier top5
+        "73750b399064a5eb43afc338cd5cad25": "select g_key,g_value from app_details_dlu where create_date='" + cdate_2_format + "' and app_key='73750b399064a5eb43afc338cd5cad25' and gby_type='appversion' and g_value>1000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 1;"
     }
 
     cursor = db.cursor()
