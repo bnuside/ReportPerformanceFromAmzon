@@ -10,7 +10,8 @@ class App():
         :return:
         """
 
-        return "select g_key,g_value from app_details_dlu where create_date='{cdate}' and app_key='{appkey}' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;".format(cdate=formated_cdate, appkey=self.app_key)
+        # return "select g_key,g_value from app_details_dlu where create_date='{cdate}' and app_key='{appkey}' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;".format(cdate=formated_cdate, appkey=self.app_key)
+        return "select * from app_details_dlu where create_date='{cdate}' and app_key='{appkey}' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit 5;".format(cdate=formated_cdate, appkey=self.app_key)
 
 
 class Kika(App):
