@@ -10,7 +10,7 @@ def make_data():
     version_data = database.get_latest_version_data(kika2019)
     cdate, _ = get_cdate(2)
     # try:
-    version_data = ['"%s"' % v[0] for v in version_data]
+    version_data = ['\'%s\'' % v[0] for v in version_data]
     version_data = ','.join(version_data)
     version_data = '(%s)' % version_data
     print(version_data)
