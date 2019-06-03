@@ -10,7 +10,7 @@ def make_data():
     version_data = database.get_latest_version_data(kika2019)
     cdate, _ = get_cdate(2)
     # try:
-    version_data = [v[0] for v in version_data]
+    version_data = ['"%s"' % v[0] for v in version_data]
     version_data = ','.join(version_data)
     version_data = '(%s)' % version_data
     print(version_data)
@@ -23,7 +23,7 @@ def make_data():
 
 def debug():
     v = (('6.6.9.4456',), ('6.6.9.4446',), ('6.6.9.4432',), ('6.6.9.4420',), ('6.6.9.4406',))
-    v = [vv[0] for vv in v]
+    v = ['"%s"'%vv[0] for vv in v]
     print(','.join(v))
 
 
