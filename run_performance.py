@@ -16,7 +16,7 @@ def make_data():
     print(version_data)
 
     matrix_data = database.get_matrix_data(kika2019, cdate, version_data)
-    print(matrix_data.splitlines())[3]
+    print(matrix_data.splitlines()[3])
     # except Exception as e:
     #     log.logger.info(e)
 
