@@ -9,16 +9,16 @@ def make_data():
     database = Database()
     version_data = database.get_latest_version_data(kika2019)
     cdate, _ = get_cdate(2)
-    try:
-        version_data = [v[0] for v in version_data]
-        version_data = ','.join(version_data)
-        version_data = '(%s)' % version_data
-        print(version_data)
+    # try:
+    version_data = [v[0] for v in version_data]
+    version_data = ','.join(version_data)
+    version_data = '(%s)' % version_data
+    print(version_data)
 
-        matrix_data = database.get_matrix_data(kika2019, cdate, version_data)
-        print(matrix_data)
-    except Exception as e:
-        log.logger.info(e)
+    matrix_data = database.get_matrix_data(kika2019, cdate, version_data)
+    print(matrix_data)
+    # except Exception as e:
+    #     log.logger.info(e)
 
 
 def debug():
