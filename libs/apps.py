@@ -3,10 +3,21 @@ class App():
     def __init__(self):
         pass
 
+    @property
+    def name(self):
+        return 'Father'
+
+    @property
+    def app_key(self):
+        return ''
 
 class Kika(App):
     def __init__(self):
         App.__init__(self)
+
+    @property
+    def name(self):
+        return 'Kika Keyboard'
 
     @property
     def app_key(self):
@@ -17,6 +28,10 @@ class Pro(App):
         App.__init__(self)
 
     @property
+    def name(self):
+        return 'Emoji Keyboard'
+
+    @property
     def app_key(self):
         return '4e5ab3a6d2140457e0423a28a094b1fd'
 
@@ -25,12 +40,20 @@ class iKey(App):
         App.__init__(self)
 
     @property
+    def name(self):
+        return 'iKeyboard'
+
+    @property
     def app_key(self):
         return 'e2934742f9d3b8ef2b59806a041ab389'
 
 class Kika2019(App):
     def __init__(self):
         App.__init__(self)
+
+    @property
+    def name(self):
+        return 'Kika Keyboard 2019'
 
     @property
     def app_key(self):
