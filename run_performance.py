@@ -16,7 +16,7 @@ def make_data():
     print(version_data)
 
     matrix_data = database.get_matrix_data(kika2019, cdate, version_data)
-    print(len(matrix_data.splitlines()))
+    print(len(matrix_data.splitlines().strip().split('\t')))
     # except Exception as e:
     #     log.logger.info(e)
 
