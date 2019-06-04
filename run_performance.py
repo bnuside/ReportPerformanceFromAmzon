@@ -3,11 +3,9 @@ from libs.apps import Kika2019
 from libs.log import Log
 from libs.common import get_cdate
 
-def make_data():
+def make_data(app, database):
     log = Log()
-    kika2019 = Kika2019()
-    database = Database()
-    version_data = database.get_latest_version_data(kika2019)
+    version_data = database.get_latest_version_data(app)
     cdate, _ = get_cdate(2)
     # try:
     version_data = ['\'%s\'' % v[0] for v in version_data]
@@ -15,8 +13,8 @@ def make_data():
     version_data = '(%s)' % version_data
     print(version_data)
 
-    matrix_data = database.get_matrix_data(kika2019, cdate, version_data)
-    print(len(matrix_data.splitlines().strip().split('\t')))
+    matrix_data = database.get_matrix_data(app, cdate, version_data)
+    print(len(matrix_data.splitlines()[3].strip().split('\t')))
     # except Exception as e:
     #     log.logger.info(e)
 
@@ -28,4 +26,6 @@ def debug():
 
 
 if __name__ == '__main__':
-    make_data()
+    kika2019 = Kika2019()
+    database = Database()
+    data_for_insert = make_data(kika2019, database)
