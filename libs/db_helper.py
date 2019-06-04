@@ -86,7 +86,7 @@ class Database(object):
         matrix_data = matrix_data.splitlines()
         for row in matrix_data[:rows]:
             try:
-                values = ','.join(row.strip().split('\t'))
+                values = ','.join(['\'%s\''% col for col in row.strip().split('\t')])
                 values = '(%s)' % values
                 sql = self._get_insert_sql(app, cdate, values)
                 self._log.logger.info(sql)
