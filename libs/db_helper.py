@@ -88,12 +88,12 @@ class Database(object):
             try:
                 values = ['\'%s\''% col for col in row.strip().split('\t')]
                 if not limit_version and not limit_nation:
-                    values.insert(2, 'all')
-                    values.insert(3, 'all')
+                    values.insert(2, "'all'")
+                    values.insert(3, "'all'")
                 elif not limit_version and limit_nation:
-                    values.insert(2, 'all')
+                    values.insert(2, "'all'")
                 elif limit_version and not limit_nation:
-                    values.insert(3, 'all')
+                    values.insert(3, "'all'")
                 else:
                     pass
                 values = ','.join(values)
