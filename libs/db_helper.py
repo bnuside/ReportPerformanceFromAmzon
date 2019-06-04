@@ -62,7 +62,7 @@ class Database(object):
         data = self._run_sql_and_commit(db_koala, cursor_koala, self._get_version_sql(app, formated_cdate))
         return data
 
-    def get_matrix_event_data(self, app, cdate, formatted_cdate, limit_nation=True, limit_version=True):
+    def get_matrix_event_data(self, app, cdate, formatted_cdate, limit_version=True, limit_nation=True):
         self._log.logger.info('Getting matrix data of %s from athena database.' % app.name)
         version_data = self.get_latest_version_data(app, formatted_cdate)
         try:
@@ -73,6 +73,7 @@ class Database(object):
                 sql = self._get_performance_data_sql(app, cdate, version_data, limit_nation)
             else:
                 sql = self._get_performance_data_sql(app, cdate, None, limit_nation)
+            self._log.logger.info(sql)
             matrix_data = self.execute_athena_sql(sql)
             return matrix_data
         except Exception as e:
