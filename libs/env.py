@@ -4,7 +4,21 @@ import re
 
 class Env(object):
     def __init__(self):
-        pass
+        self._query_jar = 'athena_query_kika_tool-1.0.jar'
+        self._connector_jar = 'mysql-connector-java-5.1.40-bin.jar'
+        self._jdbc_jar = 'AthenaJDBC41-1.0.0.jar'
+        self._sestool_jar = 'sestool-1.0.jar'
+        self._java_exec = '/usr/local/jdk1.8.0_121/bin/java'
+
+
+    @property
+    def athena_executor(self):
+        return '{java} -classpath {query}:{jdbc}:{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ '.format(
+            java=self._java_exec,
+            query=os.path.join(self.libs_path, self._query_jar),
+            jdbc=os.path.join(self.libs_path, self._jdbc_jar),
+            connector=os.path.join(self.libs_path, self._connector_jar)
+        )
 
     @property
     def project_path(self):
@@ -59,7 +73,6 @@ class Env(object):
     @property
     def sep(self):
         return os.path.sep
-
 
 
 if __name__ == '__main__':
