@@ -81,7 +81,8 @@ class Database(object):
             self._log.logger.info(e)
 
     def insert_data_to_matrix_db(self, app, cdate, matrix_data, rows=5):
-        matrix_cursor = self._get_cursor(self._db_matrix)
+        matrix_db = self._connect_matrix_database()
+        matrix_cursor = self._get_cursor(matrix_db)
         for row in matrix_data[:rows]:
             try:
                 values = ','.join(row.strip().split('\t'))
@@ -90,9 +91,9 @@ class Database(object):
                 matrix_cursor.execute(sql)
             except Exception as e:
                 self._log.logger.error(e)
-                if self._db_matrix:
-                    self._db_matrix.commit()
-        self._db_matrix.commit()
+                if matrix_db:
+                    matrix_db.commit()
+        matrix_db.commit()
 
     def _get_version_sql(self, app, formated_cdate):
         """
