@@ -56,6 +56,7 @@ class Database(object):
             self._log.logger.error(e)
 
     def get_latest_version_data(self, app, formated_cdate):
+        self._log.logger.info('Getting latest versions of %s.' % app.name)
         db_koala = self._connect_koala_database()
         cursor_koala = self._get_cursor(db_koala)
         data = self._run_sql_and_commit(db_koala, cursor_koala, self._get_version_sql(app, formated_cdate))
@@ -66,7 +67,7 @@ class Database(object):
         return self.execute_athena_sql(sql)
 
     def get_matrix_event_data(self, app, cdate, formatted_cdate):
-        self._log.logger.info('Getting matrix from athena database.')
+        self._log.logger.info('Getting matrix data of %s from athena database.' % app.name)
         version_data = self.get_latest_version_data(app, formatted_cdate)
         try:
             version_data = ['\'%s\'' % v[0] for v in version_data]
@@ -74,15 +75,15 @@ class Database(object):
             version_data = '(%s)' % version_data
 
             matrix_data = self.get_matrix_data(app, cdate, version_data)
-            print(len(matrix_data.splitlines()[3].strip().split('\t')))
-
             return matrix_data
         except Exception as e:
             self._log.logger.info(e)
 
     def insert_data_to_matrix_db(self, app, cdate, matrix_data, rows=5):
+        self._log.logger.info('Inserting matrix into database for %s.' % app.name)
         matrix_db = self._connect_matrix_database()
         matrix_cursor = self._get_cursor(matrix_db)
+        matrix_data = matrix_data.splitlines()
         for row in matrix_data[:rows]:
             try:
                 values = ','.join(row.strip().split('\t'))
