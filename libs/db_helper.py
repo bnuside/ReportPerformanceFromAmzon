@@ -88,6 +88,7 @@ class Database(object):
                 values = ','.join(row.strip().split('\t'))
                 values = '(%s)' % values
                 sql = self._get_insert_sql(app, cdate, values)
+                self._log.logger.info(sql)
                 matrix_cursor.execute(sql)
             except Exception as e:
                 self._log.logger.error(e)
