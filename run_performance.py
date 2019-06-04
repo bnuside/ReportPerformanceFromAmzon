@@ -25,11 +25,11 @@ if __name__ == '__main__':
     database = Database()
     for app in apps:
         log.logger.info('Processing matrix data of %s.' % app.name)
-        data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=True, limit_nation=True)
-        database.insert_data_to_matrix_db(kika2019, data_for_insert, 5)
-
-        # data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=True, limit_nation=False)
+        # data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=True, limit_nation=True)
         # database.insert_data_to_matrix_db(kika2019, data_for_insert, 5)
+        #
+        data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=True, limit_nation=False)
+        database.insert_data_to_matrix_db(kika2019, data_for_insert, 5)
         #
         # data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=False, limit_nation=False)
         # database.insert_data_to_matrix_db(kika2019, data_for_insert, 5)
