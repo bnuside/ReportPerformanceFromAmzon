@@ -64,9 +64,10 @@ class Database(object):
 
     def get_matrix_event_data(self, app, cdate, formatted_cdate, limit_version=True, version_count=5, limit_nation=True):
         self._log.logger.info('Getting matrix data of %s from athena database.' % app.name)
-        version_data = self.get_latest_version_data(app, formatted_cdate, version_count)
         try:
             if limit_version:
+                self._log.logger.info('Getting version count is %s.' % version_count)
+                version_data = self.get_latest_version_data(app, formatted_cdate, version_count)
                 version_data = ['\'%s\'' % v[0] for v in version_data]
                 version_data = ','.join(version_data)
                 version_data = '(%s)' % version_data
@@ -107,15 +108,17 @@ class Database(object):
                     matrix_db.commit()
         matrix_db.commit()
 
-    def _get_version_sql(self, app, formated_cdate, version_counts=5):
+    def _get_version_sql(self, app, formated_cdate, version_counts):
         """
 
         :param formated_cdate: 类似「2019-05-28」这样格式的日期
         :return:
         """
 
-        return "select g_key from app_details_dlu where create_date='{cdate}' and app_key='{appkey}' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit {v_counts};".format(
+        sql = "select g_key from app_details_dlu where create_date='{cdate}' and app_key='{appkey}' and gby_type='appversion' and g_value>10000 order by CAST(SUBSTRING_INDEX(g_key, '.', -1) AS UNSIGNED) desc limit {v_counts};".format(
             cdate=formated_cdate, appkey=app.app_key, v_counts=version_counts)
+        self._log.logger.info(sql)
+        return sql
 
     def _get_performance_data_sql(self, app, cdate, formated_versions=None, limit_nation=False):
         if formated_versions and limit_nation:
