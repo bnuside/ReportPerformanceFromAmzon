@@ -34,6 +34,3 @@ if __name__ == '__main__':
 
         data_for_insert = database.get_matrix_event_data(app,  cdate, formatted_cdate, limit_version=False, limit_nation=False)
         database.insert_data_to_matrix_db(kika2019, data_for_insert, count_of_records_for_insert, limit_version=False, limit_nation=False)
-
-        break
-
