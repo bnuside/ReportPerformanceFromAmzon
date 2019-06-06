@@ -56,7 +56,7 @@ class Database(object):
             self._log.logger.error(e)
 
     def get_latest_version_data(self, app, formated_cdate, version_count):
-        self._log.logger.info('Getting latest versions of %s.' % app.name)
+        self._log.logger.info('Getting latest versions of %s, version count %s.' % (app.name, version_count))
         db_koala = self._connect_koala_database()
         cursor_koala = self._get_cursor(db_koala)
         data = self._run_sql_and_commit(db_koala, cursor_koala, self._get_version_sql(app, formated_cdate, version_count))
