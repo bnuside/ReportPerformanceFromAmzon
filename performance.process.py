@@ -11,7 +11,7 @@ from libs.log import Log
 
 env = Env()
 log = Log()
-athena_shell = '{java} -classpath {query}{jdbc}{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ '.format(
+athena_shell = '{java} -classpath {query}{jdbc}{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAQFJUI6DZEXYXUKXO '.format(
     java='/usr/local/jdk1.8.0_121/bin/java',
     query=os.path.join(env.libs_path, 'athena_query_kika_tool-1.0.jar:'),
     jdbc=os.path.join(env.libs_path, 'AthenaJDBC41-1.0.0.jar:'),

@@ -13,7 +13,7 @@ class Env(object):
 
     @property
     def athena_executor(self):
-        return '{java} -classpath {query}:{jdbc}:{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ '.format(
+        return '{java} -classpath {query}:{jdbc}:{connector} com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAQFJUI6DZEXYXUKXO '.format(
             java=self._java_exec,
             query=os.path.join(self.libs_path, self._query_jar),
             jdbc=os.path.join(self.libs_path, self._jdbc_jar),

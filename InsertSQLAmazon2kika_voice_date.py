@@ -11,7 +11,7 @@ athena_shell = "/usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/
           "/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:" \
           "/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar" \
           " com.kika.tech.athena_query_kika_tool.AthenaQueryTool" \
-          " AKIAIUO2VW53QUXXMCFQ "
+          " AKIAQFJUI6DZEXYXUKXO "
 
 k1='\'78472ddd7528bcacc15725a16aeec190\''
 k2='\'4e5ab3a6d2140457e0423a28a094b1fd\''
@@ -38,7 +38,7 @@ def test_voice_default_date():
 
     sql_list = [
     # --数据查询
-    # usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAIUO2VW53QUXXMCFQ
+    # usr/local/jdk1.8.0_51/bin/java -classpath /home/pubsrv/project/athenaaccess/libs/athena_query_kika_tool-1.0.jar:/home/pubsrv/project/athenaaccess/libs/AthenaJDBC41-1.0.0.jar:/home/pubsrv/project/athenaaccess/libs/mysql-connector-java-5.1.40-bin.jar com.kika.tech.athena_query_kika_tool.AthenaQueryTool AKIAQFJUI6DZEXYXUKXO
     #
     # 1.
     # --用户数据统计
